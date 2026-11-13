@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#3D0D0D"/>
+<meta name="description" content="Chapa Prumo, Chapa 2 — Centro Acadêmico UTFPR. Gestão direta, transparente e presente."/>
+<title>Prumo · Chapa 2 · UTFPR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+
+/* ━━━ TOKENS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --ink:      #1C0F0F;
+  --ink-soft: #5C3D3D;
+  --paper:    #F7F3EF;
+  --paper-2:  #EDE8E0;
+  --paper-3:  #E3DDD4;
+  --white:    #FFFFFF;
+  --bordo:    #3D0D0D;
+  --bordo-m:  #6B1E1E;
+  --gold:     #B8922A;
+  --gold-l:   #D4AC50;
+  --rule:     rgba(28,15,15,.14);
+  --rule-m:   rgba(28,15,15,.08);
+
+  --f-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  --f-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+
+  --ease-out:  cubic-bezier(.22,1,.36,1);
+  --ease-in:   cubic-bezier(.64,0,.78,0);
+  --t:         .22s;
+}
+
+/* ━━━ RESET ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; font-size:16px }
+body {
+  font-family: var(--f-body);
+  background: var(--paper);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+img { display:block; max-width:100%; height:auto }
+a   { color:inherit; text-decoration:none }
+ul  { list-style:none }
+
+/* ━━━ SCROLL REVEAL ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* reveal apenas em elementos selecionados, sem flood */
+[data-r] { opacity:0; transform:translateY(20px); transition:opacity .55s var(--ease-out), transform .55s var(--ease-out) }
+[data-r].on { opacity:1; transform:none }
+[data-r="left"]  { transform:translateX(-20px) }
+[data-r="left"].on  { transform:none }
+[data-r="right"] { transform:translateX(20px) }
+[data-r="right"].on { transform:none }
+
+/* ━━━ NAV ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.nav {
+  position: fixed; top:0; left:0; right:0; z-index:900;
+  background: rgba(247,243,239,.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--rule);
+  transition: background var(--t);
+}
+.nav.dark {
+  background: rgba(61,13,13,.96);
+  border-bottom-color: rgba(184,146,42,.2);
+}
+.nav-row {
+  display: flex; align-items:center; justify-content:space-between;
+  max-width: 1200px; margin:auto; padding:0 28px; height:60px;
+}
+.brand { display:flex; align-items:center; gap:11px }
+.brand-logo { width:34px; height:34px; border-radius:50%; object-fit:cover; border:1px solid var(--gold) }
+.brand-name {
+  font-family: var(--f-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--bordo);
+  transition: color var(--t);
+}
+.nav.dark .brand-name { color: var(--gold-l) }
+.nav-links { display:flex; gap:32px }
+.nav-links a {
+  font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink);
+  position:relative; padding-bottom:3px;
+  transition: color var(--t);
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:0; left:0; width:100%; height:1px;
+  background: var(--gold);
+  transform: scaleX(0); transform-origin:left;
+  transition: transform var(--t) var(--ease-out);
+}
+.nav-links a:hover { color: var(--bordo) }
+.nav-links a:hover::after { transform:scaleX(1) }
+.nav.dark .nav-links a { color: rgba(247,243,239,.65) }
+.nav.dark .nav-links a:hover { color: var(--gold-l) }
+
+/* hamburger */
+.hbg { display:none; background:none; border:none; cursor:pointer; padding:5px; flex-direction:column; gap:5px }
+.hbg span { display:block; width:20px; height:1.5px; background:var(--bordo); transition:var(--t); border-radius:1px }
+.nav.dark .hbg span { background:var(--gold-l) }
+.hbg.o span:nth-child(1) { transform:rotate(45deg) translate(4.5px,4.5px) }
+.hbg.o span:nth-child(2) { opacity:0 }
+.hbg.o span:nth-child(3) { transform:rotate(-45deg) translate(4.5px,-4.5px) }
+.mob {
+  display:none; flex-direction:column;
+  background: var(--paper); border-top: 1px solid var(--rule);
+  padding: 6px 0 16px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+}
+.nav.dark .mob { background: #320A0A }
+.mob.o { display:flex }
+.mob a {
+  padding: 16px 24px; font-size: .88rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink); border-bottom: 1px solid var(--rule-m);
+  transition: all var(--t);
+  display: block;
+}
+.mob a:hover, .mob a:active { color: var(--gold); background: rgba(184,146,42,0.08); padding-left: 30px }
+.nav.dark .mob a { color: #FFFFFF; border-bottom-color: rgba(255,255,255,.08) }
+.nav.dark .mob a:hover, .nav.dark .mob a:active { color: var(--gold-l); background: rgba(184,146,42,0.15) }
+@media(max-width:768px) { .nav-links{display:none} .hbg{display:flex} }
+
+/* ━━━ HERO — Institucional, Sério e Marcante ━━━━━━━━━━━━ */
+.hero {
+  min-height: 90svh;
+  background: linear-gradient(135deg, #2A0808 0%, #3D0D0D 60%, #1F0505 100%);
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 100px clamp(24px, 5vw, 64px) 60px;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(184,146,42,0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+.hero-container {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: clamp(32px, 5vw, 64px);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-badge-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(184,146,42,0.14);
+  border: 1px solid rgba(184,146,42,0.4);
+  color: var(--gold-l);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  width: fit-content;
+}
+.hero-h1 {
+  font-family: var(--f-display);
+  font-size: clamp(2.8rem, 6vw, 4.8rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 20px;
+}
+.hero-h1 span.highlight {
+  color: var(--gold-l);
+  display: block;
+}
+.hero-tagline {
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  color: #E6DFD5;
+  font-weight: 400;
+  line-height: 1.6;
+  max-width: 520px;
+  margin-bottom: 36px;
+  border-left: 3px solid var(--gold);
+  padding-left: 18px;
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-block;
+  background: var(--gold);
+  color: #1C0F0F;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 4px;
+  border: 1px solid var(--gold);
+  transition: all var(--t);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.btn-primary:hover {
+  background: var(--gold-l);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(184,146,42,0.3);
+}
+.btn-primary:active { transform: translateY(1px); }
+.btn-ghost {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  padding: 15px 30px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.04);
+  transition: all var(--t);
+}
+.btn-ghost:hover {
+  border-color: var(--gold-l);
+  color: var(--gold-l);
+  background: rgba(184,146,42,0.08);
+}
+
+/* Coluna direita: Moldura elegante com a logo oficial em alta definição */
+.hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.hero-card-brand {
+  position: relative;
+  background: rgba(42, 8, 8, 0.85);
+  border: 2px solid rgba(184, 146, 42, 0.45);
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+  backdrop-filter: blur(8px);
+  width: 100%;
+  max-width: 360px;
+}
+.hero-brand-symbol {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  border: 3px solid var(--gold);
+  background: #3D0D0D;
+}
+.hero-brand-symbol img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-card-title {
+  font-family: var(--f-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.hero-card-subtitle {
+  font-size: 0.82rem;
+  color: var(--gold-l);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@media(max-width:860px) {
+  .hero {
+    min-height: auto;
+    padding: 85px 16px 45px;
+  }
+  .hero-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 28px;
+  }
+  .hero-left {
+    align-items: center;
+  }
+  .hero-badge-top {
+    font-size: 0.72rem;
+    padding: 5px 12px;
+    margin-bottom: 16px;
+  }
+  .hero-h1 {
+    font-size: clamp(2.2rem, 7vw, 3.4rem);
+    margin-bottom: 16px;
+  }
+  .hero-tagline {
+    border-left: none;
+    padding-left: 0;
+    border-top: 2px solid var(--gold);
+    padding-top: 14px;
+    margin: 0 auto 24px;
+    font-size: 0.98rem;
+    max-width: 100%;
+  }
+  .hero-actions {
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .btn-primary, .btn-ghost {
+    width: 100%;
+    text-align: center;
+    padding: 15px 20px;
+    box-sizing: border-box;
+  }
+  .hero-card-brand {
+    padding: 24px 16px;
+    max-width: 290px;
+  }
+  .hero-brand-symbol {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 16px;
+  }
+  .sobre-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .sobre-col-left {
+    padding-top: 0;
+  }
+  .sobre-col-num {
+    display: none;
+  }
+  .sobre-foto {
+    max-height: 240px;
+    width: auto;
+    margin: 0 auto;
+    border-radius: 6px;
+  }
+  .sobre-col-right {
+    padding-top: 0;
+  }
+}
+
+/* ━━━ SEÇÃO BASES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.sec { padding: clamp(52px, 8vw, 110px) 0; }
+.inner { max-width: 1200px; margin: auto; padding: 0 clamp(18px, 4vw, 48px); }
+
+.label {
+  font-size: .68rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+}
+.label::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+
+.h2 {
+  font-family: var(--f-display);
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--bordo);
+}
+.h2 i { font-style: normal; color: var(--gold); }
+
+.rule { width: 100%; height: 1px; background: var(--rule); margin: 36px 0; }
+
+/* ━━━ SOBRE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.sobre-wrap { background: var(--paper); }
+.sobre-grid {
+  display: grid; grid-template-columns: 5fr 7fr; gap: 72px; align-items: start;
+}
+
+.sobre-col-num {
+  font-family: var(--f-display); font-size: clamp(5rem, 14vw, 11rem);
+  font-weight: 400; color: var(--paper-3); line-height: 1;
+  letter-spacing: -.04em; user-select: none; margin-bottom: -20px;
+}
+.sobre-col-left { padding-top: 24px; text-align: center; }
+.sobre-foto {
+  width: 100%; aspect-ratio: 4/5;
+  object-fit: cover; object-position: center top;
+  border: 1px solid var(--paper-3); border-radius: 4px;
+}
+.sobre-col-right { padding-top: 24px; }
+.sobre-p {
+  font-size: 1rem; color: var(--ink-soft); line-height: 1.75;
+  margin-bottom: 18px; font-weight: 400;
+}
+.sobre-p strong { color: var(--ink); font-weight: 700; }
+.sobre-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.tag {
+  font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  border: 1px solid var(--rule); padding: 8px 14px; color: var(--ink-soft);
+  background: rgba(28,15,15,0.02); border-radius: 4px;
+  transition: border-color var(--t), color var(--t);
+}
+.tag:hover { border-color: var(--gold); color: var(--bordo); }
+
+/* ━━━ PROPOSTAS — layout editorial ━━━━━━━━━━━━ */
+.prop-wrap { background: var(--paper-2); }
+
+.prop-intro {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: end; margin-bottom: 52px;
+}
+@media(max-width: 768px) { .prop-intro { grid-template-columns: 1fr; gap: 16px; margin-bottom: 32px; } }
+.prop-intro-desc {
+  font-size: .98rem; color: var(--ink-soft); line-height: 1.7; font-weight: 400; max-width: 440px;
+}
+
+/* lista de eixos: linha do tempo editorial */
+.eixos { display: flex; flex-direction: column; }
+.eixo {
+  display: grid; grid-template-columns: 120px 1fr;
+  border-top: 1px solid var(--rule);
+  padding: 36px 0;
+  gap: 32px; align-items: start;
+  transition: background var(--t);
+}
+.eixo:last-child { border-bottom: 1px solid var(--rule); }
+.eixo:hover { background: rgba(28,15,15,.025); }
+@media(max-width: 768px) {
+  .eixo {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 24px 0;
+  }
+  .eixo-num {
+    font-size: 2rem !important;
+    margin-bottom: 2px !important;
+  }
+}
+
+.eixo-num {
+  font-family: var(--f-display); font-size: 3.5rem; font-weight: 800;
+  color: var(--gold); line-height: 1; letter-spacing: -.02em;
+  transition: color var(--t);
+}
+.eixo:hover .eixo-num { color: var(--gold-l); }
+.eixo-title {
+  font-family: var(--f-display);
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+  color: var(--bordo);
+  margin-bottom: 16px;
+  letter-spacing: 0;
+}
+.eixo-items { display: flex; flex-direction: column; gap: 14px; }
+.eixo-item { display: flex; align-items: baseline; gap: 14px; }
+.eixo-item-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
+  flex-shrink: 0; margin-top: 8px;
+}
+.eixo-item p { font-size: 0.98rem; color: #2D1A1A; line-height: 1.7; font-weight: 400; }
+.eixo-item p strong { color: #110606; font-weight: 700; }
+
+/* ━━━ CANDIDATAS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cand-wrap { background: var(--paper); }
+
+.cand-header {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: end; margin-bottom: 48px;
+}
+@media(max-width: 768px) { .cand-header { grid-template-columns: 1fr; gap: 16px; margin-bottom: 28px; } }
+.cand-header-desc { font-size: .98rem; color: var(--ink-soft); line-height: 1.7; font-weight: 400; }
+
+/* grade organizada e profissional */
+.cand-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.cc-1, .cc-2, .cc-3, .cc-4, .cc-5 { grid-column: auto; }
+@media(min-width: 861px) {
+  /* Linha 1: 3 cards. Linha 2: 2 cards centralizados */
+  .cc-4 { grid-column: 1 / 2; margin-left: auto; width: 100%; max-width: 380px; }
+  .cc-5 { grid-column: 2 / 3; margin-right: auto; width: 100%; max-width: 380px; }
+  .cand-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    justify-content: center;
+  }
+}
+@media(max-width: 860px) {
+  .cand-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .cc-1,.cc-2,.cc-3,.cc-4,.cc-5 { grid-column: auto !important; max-width: none !important; margin: 0 !important; }
+}
+@media(max-width: 560px) {
+  .cand-grid { grid-template-columns: 1fr; gap: 20px; max-width: 360px; margin: 0 auto; }
+}
+
+.ccard {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  display:flex; flex-direction:column;
+  position:relative; overflow:hidden;
+}
+/* padronização e enquadramento ideal de retratos */
+.ccard-img-wrap img {
+  width:100%; display:block;
+  aspect-ratio: 3/4;
+  object-fit:cover;
+  object-position:center 20%;
+  transition: transform .4s var(--ease-out), filter .3s;
+}
+.ccard:hover .ccard-img-wrap img { transform:scale(1.03) }
+
+/* Ajuste específico para a foto da Sthefany: focar no rosto e peito, não no teto */
+.cc-5 .ccard-img-wrap img {
+  aspect-ratio: 3/4;
+  object-position: center 68%;
+}
+
+@media(max-width:860px) {
+  .ccard-img-wrap img,
+  .cc-5 .ccard-img-wrap img {
+    aspect-ratio: 3/4;
+  }
+}
+
+/* overlay no hover */
+.ccard-img-wrap::after {
+  content:''; position:absolute; inset:0;
+  background:rgba(61,13,13,.0);
+  transition: background .4s;
+}
+.ccard:hover .ccard-img-wrap::after { background:rgba(61,13,13,.08) }
+
+.ccard-info {
+  padding: 18px 20px 22px;
+  border-top: 1px solid var(--rule);
+  background: #FFFFFF;
+}
+.ccard-cargo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.ccard-name {
+  font-family: var(--f-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--bordo);
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+/* ━━━ COMPROMISSO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.comp-wrap { background:var(--bordo); padding: clamp(60px, 9vw, 110px) 0; }
+.comp-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+}
+.comp-label { font-size:.68rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--gold-l); margin-bottom:16px; display:flex; align-items:center; gap:10px }
+.comp-label::before { content:''; width:20px; height:1px; background:var(--gold) }
+.comp-h2 {
+  font-family:var(--f-display);
+  font-size:clamp(2.2rem,5vw,3.8rem); font-weight:800;
+  color:var(--paper); line-height:1.15; letter-spacing:-.01em; margin-bottom:0;
+}
+.comp-h2 i { color:var(--gold-l); font-style:normal }
+.comp-p {
+  font-size:1rem; color:rgba(237,232,224,.85); line-height:1.75;
+  font-weight:400; margin-bottom:30px;
+}
+.comp-p + .comp-p { margin-top:-14px }
+.btn-vote {
+  display:inline-block;
+  background:var(--gold);
+  border:1px solid var(--gold);
+  color:#1C0F0F;
+  font-size:.85rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  padding:16px 36px; border-radius:4px;
+  transition: all var(--t);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.btn-vote:hover { background:var(--gold-l); transform:translateY(-2px); }
+.btn-vote:active { transform:translateY(1px) }
+.comp-num {
+  font-family:var(--f-display);
+  font-size:clamp(6rem,18vw,14rem); font-weight:800;
+  color:rgba(184,146,42,.12); line-height:1; letter-spacing:-.04em;
+  text-align:right; user-select:none;
+}
+
+@media(max-width:768px) {
+  .comp-grid { grid-template-columns:1fr; gap:28px; }
+  .comp-num { display:none; }
+  .btn-vote { display:block; width:100%; text-align:center; padding:16px 20px; box-sizing:border-box; }
+}
+
+/* ━━━ FOOTER ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+footer {
+  background:#260808;
+  border-top:1px solid rgba(184,146,42,.2);
+  padding:24px clamp(20px,4vw,48px);
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  max-width:100%;
+}
+@media(max-width:600px) {
+  footer { flex-direction:column; text-align:center; gap:8px; }
+}
+.footer-brand { font-family:var(--f-display); font-size:1.05rem; font-weight:800; color:var(--gold-l); letter-spacing:.06em }
+.footer-copy { font-size:.76rem; color:rgba(237,232,224,.5); letter-spacing:.03em }
+
+/* ━━━ SCROLL PROGRESS ━━━━━━━━━━━━━━━━━━━━━━━━ */
+.progress {
+  position:fixed; top:0; left:0; height:2px; background:var(--gold);
+  width:0%; z-index:1000; transition:width .1s linear;
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<!-- ━━━ NAV ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<nav class="nav" id="nav">
+  <div class="nav-row">
+    <div class="brand">
+      <img src="assets/logo.jpeg" alt="Prumo" class="brand-logo" loading="lazy"/>
+      <span class="brand-name">Prumo</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#propostas">Propostas</a></li>
+      <li><a href="#chapa">A Chapa</a></li>
+      <li><a href="#compromisso">Compromisso</a></li>
+    </ul>
+    <button class="hbg" id="hbg" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mob" id="mob">
+    <a href="#sobre"       onclick="cm()">Sobre</a>
+    <a href="#propostas"   onclick="cm()">Propostas</a>
+    <a href="#chapa"       onclick="cm()">A Chapa</a>
+    <a href="#compromisso" onclick="cm()">Compromisso</a>
+  </nav>
+</nav>
+
+<!-- ━━━ HERO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="hero" id="inicio">
+  <div class="hero-container">
+    <div class="hero-left">
+      <div class="hero-badge-top">Centro Acadêmico UTFPR &nbsp;·&nbsp; Eleições 2027</div>
+      <h1 class="hero-h1">
+        CHAPA PRUMO
+        <span class="highlight">CHAPA 02</span>
+      </h1>
+      <p class="hero-tagline">
+        Gestão séria, transparente e presente. Representação direta e compromisso real com a graduação de Engenharia Civil.
+      </p>
+      <div class="hero-actions">
+        <a href="#propostas" class="btn-primary">Conhecer Propostas</a>
+        <a href="#chapa" class="btn-ghost">Ver Integrantes</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card-brand">
+        <div class="hero-brand-symbol">
+          <img src="assets/logo.jpeg" alt="Logo Oficial Prumo" loading="eager"/>
+        </div>
+        <div class="hero-card-title">PRUMO</div>
+        <div class="hero-card-subtitle">Chapa 02 &nbsp;|&nbsp; Gestão 2027</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ SOBRE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="sec sobre-wrap" id="sobre">
+  <div class="inner">
+    <div class="sobre-grid">
+      <div class="sobre-col-left" data-r="left">
+        <div class="sobre-col-num">01</div>
+        <img src="assets/logo.jpeg" alt="Logo Prumo" class="sobre-foto"/>
+      </div>
+      <div class="sobre-col-right">
+        <p class="label" data-r>Quem somos</p>
+        <h2 class="h2" data-r>
+          Um CA feito<br/><i>de estudante<br/>para estudante.</i>
+        </h2>
+        <div class="rule"></div>
+        <p class="sobre-p" data-r>
+          A Prumo nasceu da frustração de ver o Centro Acadêmico ausente nos momentos que realmente importam. Não somos candidatas de campanha — somos estudantes que precisaram correr atrás de informação sobre rematrícula, que não tinham a quem recorrer quando o laboratório quebrou e que sentiram falta de alguém presente do outro lado.
+        </p>
+        <p class="sobre-p" data-r>
+          <strong>Nossa gestão é enxuta por escolha, não por limitação.</strong> Cinco pessoas com funções claras, transparência pública e metas concretas que você pode acompanhar e cobrar.
+        </p>
+        <div class="sobre-tags" data-r>
+          <span class="tag">Transparência</span>
+          <span class="tag">Representatividade</span>
+          <span class="tag">Gestão Enxuta</span>
+          <span class="tag">Liderança Feminina</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ PROPOSTAS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="sec prop-wrap" id="propostas">
+  <div class="inner">
+    <div class="prop-intro">
+      <div>
+        <p class="label">Plano de Mandato</p>
+        <h2 class="h2" data-r>O que<br/><i>vamos fazer.</i></h2>
+      </div>
+      <p class="prop-intro-desc" data-r>
+        Cinco eixos fundamentais. Cada um com ações específicas, prazos reais e indicadores que você vai poder acompanhar publicamente desde o primeiro mês de mandato.
+      </p>
+    </div>
+
+    <div class="eixos">
+
+      <div class="eixo" data-r>
+        <div class="eixo-num">01</div>
+        <div>
+          <h3 class="eixo-title">Estrutura e Transparência Institucional</h3>
+          <div class="eixo-items">
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Gestão com 5 lideranças fixas:</strong> sem inchaço e sem cargos de favor. Cada função tem responsável direta com nome público.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Seleção aberta para subdiretorias:</strong> edital público, critérios claros e qualquer estudante pode se candidatar.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Portal financeiro mensal:</strong> balancetes publicados no site, acessíveis a todos e sem necessidade de login.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Relatório semestral:</strong> prestação de contas do que foi feito, o que não foi e por quê — com transparência total.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>WhatsApp institucional do CACAR:</strong> atendimento direto pelo canal oficial do CA, sem depender de celulares pessoais.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eixo" data-r>
+        <div class="eixo-num">02</div>
+        <div>
+          <h3 class="eixo-title">Comunicação, Acolhimento e Vivência</h3>
+          <div class="eixo-items">
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Canais de WhatsApp reestruturados:</strong> avisos objetivos e organizados. Apenas o que realmente importa, sem grupos sobrecarregados.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Apadrinhamento real de calouros:</strong> veteranos disponíveis da 1ª à última chamada para auxílio com rematrícula, campus Ecoville e materiais.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Eventos com propósito:</strong> integração, cultura e descompressão acadêmica — iniciativas planejadas com relevância real.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Comitê de Inclusão e Liderança:</strong> espaço permanente para debater acessibilidade e incentivar a liderança feminina na Engenharia Civil.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eixo" data-r>
+        <div class="eixo-num">03</div>
+        <div>
+          <h3 class="eixo-title">Defesa Acadêmica e Ouvidoria Ativa</h3>
+          <div class="eixo-items">
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Ouvidoria anônima permanente:</strong> formulário seguro e contínuo para apontamentos de infraestrutura, conduta e sugestões acadêmicas.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Cobrança formal ao DACOC:</strong> relatórios periódicos solicitando melhorias na grade, oferta de disciplinas de férias e reposição docente.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Mapeamento técnico de laboratórios:</strong> diagnóstico rigoroso de equipamentos avariados ou obsoletos com cobrança formal de manutenção.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eixo" data-r>
+        <div class="eixo-num">04</div>
+        <div>
+          <h3 class="eixo-title">Prática Profissional e Mercado</h3>
+          <div class="eixo-items">
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Visitas técnicas garantidas:</strong> pelo menos duas visitas anuais a canteiros de obras e indústrias, com emissão de horas complementares.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Painel com egressos:</strong> encontros semestrais com profissionais atuantes no mercado prático da construção civil e projetos.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Central de estágios e capacitação:</strong> divulgação semanal de vagas e parcerias para oficinas de Revit, AutoCAD, BIM, Ftool e Excel.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p><strong>Engenharia Solidária:</strong> projetos de extensão técnica voltados a demandas comunitárias, unindo impacto social e horas formativas.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eixo" data-r>
+        <div class="eixo-num">05</div>
+        <div>
+          <h3 class="eixo-title">Compromisso Ético e Representativo</h3>
+          <div class="eixo-items">
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p>Não prometemos o que não é viável entregar. Se houver qualquer obstáculo, comunicaremos abertamente os motivos aos estudantes.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p>O Centro Acadêmico existe para servir ao corpo discente. Cada decisão será tomada pensando no benefício direto dos alunos.</p></div>
+            <div class="eixo-item"><div class="eixo-item-dot"></div><p>Gestão aberta, auditável e orientada a resultados verificáveis desde o primeiro dia de mandato.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ CANDIDATAS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="sec cand-wrap" id="chapa">
+  <div class="inner">
+    <div class="cand-header">
+      <div>
+        <p class="label">A Chapa</p>
+        <h2 class="h2" data-r>Cinco.<br/><i>Com nome<br/>e função.</i></h2>
+      </div>
+      <p class="cand-header-desc" data-r>
+        Sem hierarquias escondidas. Cada integrante possui uma área de responsabilidade pública e responde diretamente pelos resultados de sua pasta.
+      </p>
+    </div>
+
+    <div class="cand-grid">
+      <!-- Presidente -->
+      <div class="cc-1" data-r="left">
+        <div class="ccard">
+          <div class="ccard-img-wrap">
+            <img src="assets/karol.jpg" alt="Karoline dos Santos Ribeiro" loading="lazy"/>
+          </div>
+          <div class="ccard-info">
+            <p class="ccard-cargo">Presidente</p>
+            <h3 class="ccard-name">Karoline dos Santos Ribeiro</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vice -->
+      <div class="cc-2" data-r>
+        <div class="ccard">
+          <div class="ccard-img-wrap">
+            <img src="assets/gabi.jpg" alt="Gabriely Franco Bertoni" loading="lazy"/>
+          </div>
+          <div class="ccard-info">
+            <p class="ccard-cargo">Vice-Presidente</p>
+            <h3 class="ccard-name">Gabriely Franco Bertoni</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Adm-Fin -->
+      <div class="cc-3" data-r="right">
+        <div class="ccard">
+          <div class="ccard-img-wrap">
+            <img src="assets/lari.jpg" alt="Larissa Raquel Rufino Cardoso" loading="lazy"/>
+          </div>
+          <div class="ccard-info">
+            <p class="ccard-cargo">Dir. Administrativo-Financeiro</p>
+            <h3 class="ccard-name">Larissa Raquel Rufino Cardoso</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Marketing -->
+      <div class="cc-4" data-r="left">
+        <div class="ccard">
+          <div class="ccard-img-wrap">
+            <img src="assets/ana.jpg" alt="Ana Carolina Batista" loading="lazy"/>
+          </div>
+          <div class="ccard-info">
+            <p class="ccard-cargo">Dir. Marketing</p>
+            <h3 class="ccard-name">Ana Carolina Batista</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cultural — maior -->
+      <div class="cc-5" data-r="right">
+        <div class="ccard">
+          <div class="ccard-img-wrap">
+            <img src="assets/sthe.jpg" alt="Sthefany Kononczuk" loading="lazy"/>
+          </div>
+          <div class="ccard-info">
+            <p class="ccard-cargo">Dir. Cultural</p>
+            <h3 class="ccard-name">Sthefany Kononczuk</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ COMPROMISSO / CTA ━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="sec comp-wrap" id="compromisso">
+  <div class="inner">
+    <div class="comp-grid">
+      <div>
+        <p class="comp-label">Vote com consciência</p>
+        <h2 class="comp-h2" data-r>
+          Um CA<br/>
+          <i>que está<br/>presente.</i>
+        </h2>
+      </div>
+      <div>
+        <p class="comp-p" data-r>
+          Se você já desistiu de mandar mensagem para o Centro Acadêmico porque ninguém responde, se já perdeu prazo por falta de informação ou se já sentiu que sua turma não tem representação real — a Prumo nasceu para mudar isso.
+        </p>
+        <p class="comp-p" data-r style="margin-bottom:36px">
+          Sem politicagem. Sem promessas vazias. Com trabalho sério que você vai poder verificar.
+        </p>
+        <a href="#inicio" class="btn-vote" data-r>Vote Prumo — Chapa 2</a>
+      </div>
+    </div>
+    <div class="comp-num" aria-hidden="true">02</div>
+  </div>
+</section>
+
+<!-- ━━━ FOOTER ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<footer>
+  <span class="footer-brand">Prumo</span>
+  <span class="footer-copy">© 2026 · Chapa 2 · Centro Acadêmico UTFPR · Eleições 2027</span>
+</footer>
+
+<script>
+/* progress bar */
+const prog=document.getElementById('progress');
+window.addEventListener('scroll',()=>{
+  prog.style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+},{passive:true});
+
+/* nav dark quando sai do hero */
+const nav=document.getElementById('nav');
+const hero=document.querySelector('.hero');
+const hObs=new IntersectionObserver(([e])=>nav.classList.toggle('dark',!e.isIntersecting),{threshold:0.05});
+hObs.observe(hero);
+
+/* hamburger */
+const hbg=document.getElementById('hbg'),mob=document.getElementById('mob');
+hbg.addEventListener('click',()=>{
+  const o=hbg.classList.toggle('o');
+  mob.classList.toggle('o',o);
+  hbg.setAttribute('aria-expanded',o);
+});
+function cm(){hbg.classList.remove('o');mob.classList.remove('o');hbg.setAttribute('aria-expanded','false')}
+document.addEventListener('click',e=>{if(!nav.contains(e.target))cm()});
+
+/* scroll reveal — so elementos com [data-r] */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('on'),i*60);
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+
+document.querySelectorAll('[data-r]').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
